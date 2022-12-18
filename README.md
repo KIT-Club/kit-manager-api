@@ -1,12 +1,20 @@
 # KIT Manager API
 
-### Installation
+## Requires
+- Composer
+- PHP 8.1 (include php8.1-xml php8.1-dom php8.1-curl)
+- Make
+- Docker (develop)
 
-- Go
-- AWS CLI
-- golang-migrate: `scoop install migrate`
+## Install
+```
+composer install
+php artisan
+php artisan key:generate
+```
 
-### Commands
-
-Generate swagger documentation: `make swag`  
-Run for development: `make dev`
+## Run
+- With Sail
+```
+make up
+```
