@@ -1,4 +1,8 @@
+start-wsl:
+	sudo service docker start
+export:
+	$(shell echo "$$PATH")
 up:
-	./vendor/bin/sail up -d
+	docker-compose up -d
 down:
-	./vendor/bin/sail stop
+	docker-compose down
