@@ -1,7 +1,5 @@
-start-wsl:
+start-docker:
 	sudo service docker start
-export:
-	$(shell echo "$$PATH")
 up:
 	docker-compose up -d
 down:

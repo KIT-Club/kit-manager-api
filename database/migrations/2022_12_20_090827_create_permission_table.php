@@ -13,17 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('user'))
-            Schema::create('user', function (Blueprint $table) {
+        if (!Schema::hasTable('permission'))
+            Schema::create('permission', function (Blueprint $table) {
                 $table->id();
-                $table->string('username')->unique();
+                $table->string('code')->unique();
                 $table->string('name');
-                $table->string('email')->nullable();
-                $table->date('birthday');
-                $table->string('avatar')->nullable();
-                $table->string('class');
-                $table->string('major');
-                $table->string('facebook')->nullable();
                 $table->timestamps();
             });
     }
@@ -35,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user');
+        Schema::dropIfExists('permission');
     }
 };
