@@ -4,6 +4,10 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -43,6 +47,13 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+        $this->renderable(function (Exception $exception, $request) {
+            return response()->json([
+                'status' => 'error',
+                'error' => $exception->getMessage()
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        });
+
         $this->reportable(function (Throwable $e) {
             //
         });

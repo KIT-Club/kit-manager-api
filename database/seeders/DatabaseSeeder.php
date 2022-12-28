@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         User::create([
-            'username' => 'CT000000',
+            'username' => 'AT010101',
             'name' => 'Test User',
             'birthday' => '2000-01-01',
-            'class' => 'AT01A',
+            'class' => 'AT1A',
             'major' => "Công nghệ thông tin"
         ]);
     }

@@ -4,3 +4,7 @@ up:
 	docker-compose up -d
 down:
 	docker-compose down
+kill:
+	fuser -k 8000/tcp
+dev:
+	php artisan serve
