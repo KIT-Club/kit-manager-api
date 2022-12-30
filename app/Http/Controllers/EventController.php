@@ -59,6 +59,12 @@ class EventController extends Controller
      *      path="/events/{id}",
      *      tags={"Events"},
      *      summary="show",
+     *      @OA\Parameter(
+     *          name="id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(type="integer")
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="response",
@@ -76,6 +82,12 @@ class EventController extends Controller
      *      path="/events/{id}",
      *      tags={"Events"},
      *      summary="update",
+     *      @OA\Parameter(
+     *          name="id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(type="integer")
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="response",
@@ -95,6 +107,12 @@ class EventController extends Controller
      *      path="/events/{id}",
      *      tags={"Events"},
      *      summary="destroy",
+     *      @OA\Parameter(
+     *          name="id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(type="integer")
+     *      ),
      *      @OA\Response(
      *          response=204,
      *          description="response",

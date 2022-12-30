@@ -64,6 +64,16 @@
                 ],
                 "summary": "show",
                 "operationId": "f2f0a5a610e5bd6a572f3b9bd5dd52c3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "response",
@@ -83,6 +93,16 @@
                 ],
                 "summary": "update",
                 "operationId": "4e52f27bc565fbbc73a09411c475b011",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "response",
@@ -102,6 +122,16 @@
                 ],
                 "summary": "destroy",
                 "operationId": "d9e4e6c812ee62b2c751d1d2d3d44b80",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "204": {
                         "description": "response"
