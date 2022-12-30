@@ -10,12 +10,24 @@ use Illuminate\Http\Request;
 use \Illuminate\Http\JsonResponse;
 use \Illuminate\Http\Response;
 
+/**
+ * @OA\Paths(
+ *      path="/events",
+ * )
+ */
 class EventController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *      path="/events",
+     *      tags={"Events"},
+     *      summary="index",
+     *      @OA\Response(
+     *          response=200,
+     *          description="response",
+     *          @OA\JsonContent(ref="#/components/schemas/EventResource")
+     *       ),
+     *     )
      */
     public function index()
     {
@@ -24,10 +36,16 @@ class EventController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Post(
+     *      path="/events",
+     *      tags={"Events"},
+     *      summary="store",
+     *      @OA\Response(
+     *          response=200,
+     *          description="response",
+     *          @OA\JsonContent(ref="#/components/schemas/EventResource")
+     *       ),
+     *     )
      */
     public function store(StoreEventRequest $request)
     {
@@ -37,10 +55,16 @@ class EventController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Get(
+     *      path="/events/{id}",
+     *      tags={"Events"},
+     *      summary="show",
+     *      @OA\Response(
+     *          response=200,
+     *          description="response",
+     *          @OA\JsonContent(ref="#/components/schemas/EventResource")
+     *       ),
+     *     )
      */
     public function show(Event $event)
     {
@@ -48,11 +72,16 @@ class EventController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @OA\Put(
+     *      path="/events/{id}",
+     *      tags={"Events"},
+     *      summary="update",
+     *      @OA\Response(
+     *          response=200,
+     *          description="response",
+     *          @OA\JsonContent(ref="#/components/schemas/EventResource")
+     *       ),
+     *     )
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
@@ -62,10 +91,15 @@ class EventController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @OA\Delete(
+     *      path="/events/{id}",
+     *      tags={"Events"},
+     *      summary="destroy",
+     *      @OA\Response(
+     *          response=204,
+     *          description="response",
+     *       ),
+     *     )
      */
     public function destroy(Event $event)
     {

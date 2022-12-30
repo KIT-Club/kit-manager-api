@@ -4,13 +4,17 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @OA\Schema
+ */
 class EventResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @OA\Property(
+     *      property="data",
+     *      type="array",
+     *      @OA\Items(ref="#/components/schemas/Event"),
+     * ),
      */
     public function toArray($request)
     {

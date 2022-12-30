@@ -1,0 +1,149 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "KIT Manager OpenApi Documentation",
+        "contact": {
+            "email": "ngosangns@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api"
+        }
+    ],
+    "paths": {
+        "/events": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "index",
+                "operationId": "66c820e79ec6535e179375c186db9395",
+                "responses": {
+                    "200": {
+                        "description": "response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "store",
+                "operationId": "698833baaa136da25b55969bda5104d7",
+                "responses": {
+                    "200": {
+                        "description": "response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/{id}": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "show",
+                "operationId": "f2f0a5a610e5bd6a572f3b9bd5dd52c3",
+                "responses": {
+                    "200": {
+                        "description": "response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "update",
+                "operationId": "4e52f27bc565fbbc73a09411c475b011",
+                "responses": {
+                    "200": {
+                        "description": "response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "destroy",
+                "operationId": "d9e4e6c812ee62b2c751d1d2d3d44b80",
+                "responses": {
+                    "204": {
+                        "description": "response"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "EventResource": {
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Event"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Event": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "start_date": {
+                        "type": "string"
+                    },
+                    "end_date": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {}
+        }
+    }
+}
