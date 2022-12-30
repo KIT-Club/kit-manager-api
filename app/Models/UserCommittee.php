@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Permission extends Model
+class UserCommittee extends Model
 {
     use HasFactory;
 
-    protected $table = 'permission';
+    protected $table = 'user_committee';
 
     protected $fillable = [
-        'role_id',
-        'controller',
-        'action'
+        'user_id',
+        'committee_id',
     ];
 }

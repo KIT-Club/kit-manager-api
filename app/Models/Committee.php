@@ -10,4 +10,8 @@ class Committee extends Model
     use HasFactory;
 
     protected $table = 'committee';
+
+    protected $fillable = [
+        'name',
+    ];
 }

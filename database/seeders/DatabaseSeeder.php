@@ -2,9 +2,13 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Role;
+use App\Models\Committee;
+use App\Models\UserRole;
+use App\Models\UserCommittee;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,12 +19,34 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
-            'username' => 'AT010101',
-            'name' => 'Test User',
-            'birthday' => '2000-01-01',
-            'class' => 'AT1A',
-            'major' => "Công nghệ thông tin"
-        ]);
+        DB::transaction(function () {
+            User::create([
+                'username' => 'AT010101',
+                'name' => 'Nguyen Van A',
+                'birthday' => '1986-01-01',
+                'class' => 'AT1A',
+                'major' => "An Toàn thông tin"
+            ]);
+
+            Role::create(['name' => 'Super Admin']);
+            Role::create(['name' => 'Owner']);
+            Role::create(['name' => 'Moderator']);
+            Role::create(['name' => 'Member']);
+
+            Committee::create(['name' => "Điều Hành"]);
+            Committee::create(['name' => "Chuyên Môn"]);
+            Committee::create(['name' => "Truyền Thông"]);
+            Committee::create(['name' => "Hậu Cần"]);
+
+            UserRole::create([
+                'user_id' => User::where('username', 'AT010101')->first()->id,
+                'role_id' => Role::where('name', "Super Admin")->first()->id,
+            ]);
+
+            UserCommittee::create([
+                'user_id' => User::where('username', 'AT010101')->first()->id,
+                'committee_id' => Committee::where('name', "Điều Hành")->first()->id,
+            ]);
+        });
     }
 }

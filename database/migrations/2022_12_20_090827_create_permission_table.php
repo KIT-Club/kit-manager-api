@@ -16,9 +16,13 @@ return new class extends Migration
         if (!Schema::hasTable('permission'))
             Schema::create('permission', function (Blueprint $table) {
                 $table->id();
-                $table->string('code')->unique();
-                $table->string('name');
+                $table->unsignedBigInteger('role_id');
+                $table->string('controller');
+                $table->string('action');
                 $table->timestamps();
+
+                $table->unique(['role_id', 'controller', 'action']);
+                $table->foreign('role_id')->references('id')->on('role')->cascadeOnDelete();
             });
     }
 
