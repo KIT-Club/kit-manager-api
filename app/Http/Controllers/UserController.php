@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use App\Utils\CrawlUtil;
 use Exception;
+use App\Http\Resources\UserResource;
+use \Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
@@ -18,6 +19,20 @@ class UserController extends Controller
         $this->crawlUtil = $crawlUtil;
     }
 
+    /**
+     * @OA\Post(
+     *      path="/login",
+     *      tags={"users"},
+     *      summary="login",
+     *      @OA\Response(
+     *          response=200,
+     *          description="response",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="token", type="string")
+     *          )
+     *       ),
+     *     )
+     */
     public function login(\App\Http\Requests\LoginUserRequest $request)
     {
         // get form
@@ -108,78 +123,67 @@ class UserController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *      path="/users",
+     *      tags={"users"},
+     *      summary="index",
+     *      @OA\Response(
+     *          response=200,
+     *          description="response",
+     *          @OA\JsonContent(ref="#/components/schemas/UserResource")
+     *       ),
+     *     )
      */
     public function index()
     {
-        //
+        $users = User::paginate();
+        return (new UserResource($users))->response();
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreUserRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreUserRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *      path="/users/{id}",
+     *      tags={"users"},
+     *      summary="show",
+     *      @OA\Parameter(
+     *          name="id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="response",
+     *          @OA\JsonContent(ref="#/components/schemas/UserResource")
+     *       ),
+     *     )
      */
     public function show(User $user)
     {
-        //
+        return (new UserResource($user))->response();
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateUserRequest  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @OA\Put(
+     *      path="/users/{id}",
+     *      tags={"users"},
+     *      summary="update",
+     *      @OA\Parameter(
+     *          name="id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="response",
+     *          @OA\JsonContent(ref="#/components/schemas/UserResource")
+     *       ),
+     *     )
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
-    {
-        //
+        $user->update($request->all());
+        return (new UserResource($user))->response()->setStatusCode(JsonResponse::HTTP_OK);
     }
 }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\EventController;
+use \App\Http\Controllers\CommitteeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,4 +19,6 @@ Route::post('login', [UserController::class, 'login']);
 
 Route::apiResources([
     'events' => EventController::class,
+    'users' => UserController::class,
+    'committees' => CommitteeController::class,
 ]);

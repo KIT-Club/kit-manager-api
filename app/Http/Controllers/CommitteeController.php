@@ -2,56 +2,55 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreEventRequest;
-use App\Http\Requests\UpdateEventRequest;
-use App\Http\Resources\EventResource;
-use App\Models\Event;
+use App\Http\Requests\StoreCommitteeRequest;
+use App\Http\Requests\UpdateCommitteeRequest;
+use App\Http\Resources\CommitteeResource;
+use App\Models\Committee;
 use \Illuminate\Http\JsonResponse;
 use \Illuminate\Http\Response;
 
-class EventController extends Controller
+class CommitteeController extends Controller
 {
     /**
      * @OA\Get(
-     *      path="/events",
-     *      tags={"events"},
+     *      path="/committees",
+     *      tags={"committees"},
      *      summary="index",
      *      @OA\Response(
      *          response=200,
      *          description="response",
-     *          @OA\JsonContent(ref="#/components/schemas/EventResource")
+     *          @OA\JsonContent(ref="#/components/schemas/CommitteeResource")
      *       ),
      *     )
      */
     public function index()
     {
-        $events = Event::with('users')->paginate();
-        return (new EventResource($events))->response();
+        $committees = Committee::paginate();
+        return (new CommitteeResource($committees))->response();
     }
 
     /**
      * @OA\Post(
-     *      path="/events",
-     *      tags={"events"},
+     *      path="/committees",
+     *      tags={"committees"},
      *      summary="store",
      *      @OA\Response(
      *          response=200,
      *          description="response",
-     *          @OA\JsonContent(ref="#/components/schemas/EventResource")
+     *          @OA\JsonContent(ref="#/components/schemas/CommitteeResource")
      *       ),
      *     )
      */
-    public function store(StoreEventRequest $request)
+    public function store(StoreCommitteeRequest $request)
     {
-        $event = Event::create($request->all());
-        $event->users()->sync($request->input('user_ids'));
-        return (new EventResource($event->load('users')))->response()->setStatusCode(JsonResponse::HTTP_CREATED);
+        $event = Committee::create($request->all());
+        return (new CommitteeResource($event))->response()->setStatusCode(JsonResponse::HTTP_CREATED);
     }
 
     /**
      * @OA\Get(
-     *      path="/events/{id}",
-     *      tags={"events"},
+     *      path="/committees/{id}",
+     *      tags={"committees"},
      *      summary="show",
      *      @OA\Parameter(
      *          name="id",
@@ -62,19 +61,19 @@ class EventController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="response",
-     *          @OA\JsonContent(ref="#/components/schemas/EventResource")
+     *          @OA\JsonContent(ref="#/components/schemas/CommitteeResource")
      *       ),
      *     )
      */
-    public function show(Event $event)
+    public function show(Committee $committee)
     {
-        return (new EventResource($event->load('users')))->response();
+        return (new CommitteeResource($committee))->response();
     }
 
     /**
      * @OA\Put(
-     *      path="/events/{id}",
-     *      tags={"events"},
+     *      path="/committees/{id}",
+     *      tags={"committees"},
      *      summary="update",
      *      @OA\Parameter(
      *          name="id",
@@ -85,21 +84,20 @@ class EventController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="response",
-     *          @OA\JsonContent(ref="#/components/schemas/EventResource")
+     *          @OA\JsonContent(ref="#/components/schemas/CommitteeResource")
      *       ),
      *     )
      */
-    public function update(UpdateEventRequest $request, Event $event)
+    public function update(UpdateCommitteeRequest $request, Committee $committee)
     {
-        $event->update($request->all());
-        $event->users()->sync($request->input('user_ids'));
-        return (new EventResource($event->load('users')))->response()->setStatusCode(JsonResponse::HTTP_OK);
+        $committee->update($request->all());
+        return (new CommitteeResource($committee))->response()->setStatusCode(JsonResponse::HTTP_OK);
     }
 
     /**
      * @OA\Delete(
-     *      path="/events/{id}",
-     *      tags={"events"},
+     *      path="/committees/{id}",
+     *      tags={"committees"},
      *      summary="destroy",
      *      @OA\Parameter(
      *          name="id",
@@ -113,9 +111,9 @@ class EventController extends Controller
      *       ),
      *     )
      */
-    public function destroy(Event $event)
+    public function destroy(Committee $committee)
     {
-        $event->delete();
+        $committee->delete();
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }
