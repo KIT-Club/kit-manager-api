@@ -38,12 +38,12 @@ class DatabaseSeeder extends Seeder
             Committee::create(['name' => "Truyền Thông"]);
             Committee::create(['name' => "Hậu Cần"]);
 
-            UserRole::create([
+            DB::table('user_role')->create([
                 'user_id' => User::where('username', 'AT010101')->first()->id,
                 'role_id' => Role::where('name', "Super Admin")->first()->id,
             ]);
 
-            UserCommittee::create([
+            DB::table('user_committee')->create([
                 'user_id' => User::where('username', 'AT010101')->first()->id,
                 'committee_id' => Committee::where('name', "Điều Hành")->first()->id,
             ]);
