@@ -6,8 +6,8 @@ use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
-use \Illuminate\Http\JsonResponse;
-use \Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class EventController extends Controller
 {
@@ -19,9 +19,15 @@ class EventController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="response",
-     *          @OA\JsonContent(ref="#/components/schemas/EventResource")
-     *       ),
-     *     )
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                   property="data",
+     *                   type="array",
+     *                   @OA\Items(ref="#/components/schemas/Event"),
+     *              ),
+     *          ),
+     *      ),
+     * ),
      */
     public function index()
     {
@@ -34,12 +40,21 @@ class EventController extends Controller
      *      path="/events",
      *      tags={"events"},
      *      summary="store",
+     *      @OA\RequestBody(
+     *          @OA\JsonContent(ref="#/components/schemas/StoreEventRequest"),
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="response",
-     *          @OA\JsonContent(ref="#/components/schemas/EventResource")
-     *       ),
-     *     )
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                   property="data",
+     *                   type="object",
+     *                   ref="#/components/schemas/Event",
+     *              ),
+     *          ),
+     *      ),
+     * ),
      */
     public function store(StoreEventRequest $request)
     {
@@ -62,9 +77,15 @@ class EventController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="response",
-     *          @OA\JsonContent(ref="#/components/schemas/EventResource")
-     *       ),
-     *     )
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                   property="data",
+     *                   type="object",
+     *                   ref="#/components/schemas/Event",
+     *              ),
+     *          ),
+     *      ),
+     * ),
      */
     public function show(Event $event)
     {
@@ -82,12 +103,21 @@ class EventController extends Controller
      *          in="path",
      *          @OA\Schema(type="integer")
      *      ),
+     *      @OA\RequestBody(
+     *          @OA\JsonContent(ref="#/components/schemas/StoreEventRequest"),
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="response",
-     *          @OA\JsonContent(ref="#/components/schemas/EventResource")
-     *       ),
-     *     )
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                   property="data",
+     *                   type="object",
+     *                   ref="#/components/schemas/Event",
+     *              ),
+     *          ),
+     *      ),
+     * ),
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
@@ -111,7 +141,7 @@ class EventController extends Controller
      *          response=204,
      *          description="response",
      *       ),
-     *     )
+     *     ),
      */
     public function destroy(Event $event)
     {

@@ -24,7 +24,9 @@ class UpdateCommitteeRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|max:255',
+            'user_ids' => 'required|array',
+            'user_ids.*' => 'required|distinct|integer|min:1',
         ];
     }
 }

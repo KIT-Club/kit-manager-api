@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\Http;
 use App\Utils\CrawlUtil;
-use Exception;
+use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Support\Facades\Http;
 use App\Http\Resources\UserResource;
-use \Illuminate\Http\JsonResponse;
+use Illuminate\Http\JsonResponse;
+use Exception;
 
 class UserController extends Controller
 {
@@ -24,14 +24,17 @@ class UserController extends Controller
      *      path="/login",
      *      tags={"users"},
      *      summary="login",
+     *      @OA\RequestBody(
+     *          @OA\JsonContent(ref="#/components/schemas/LoginUserRequest"),
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="response",
      *          @OA\JsonContent(
      *              @OA\Property(property="token", type="string")
-     *          )
+     *          ),
      *       ),
-     *     )
+     * ),
      */
     public function login(\App\Http\Requests\LoginUserRequest $request)
     {
@@ -130,9 +133,15 @@ class UserController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="response",
-     *          @OA\JsonContent(ref="#/components/schemas/UserResource")
-     *       ),
-     *     )
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                   property="data",
+     *                   type="array",
+     *                   @OA\Items(ref="#/components/schemas/User"),
+     *              ),
+     *          ),
+     *      ),
+     * ),
      */
     public function index()
     {
@@ -154,9 +163,15 @@ class UserController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="response",
-     *          @OA\JsonContent(ref="#/components/schemas/UserResource")
-     *       ),
-     *     )
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                   property="data",
+     *                   type="object",
+     *                   ref="#/components/schemas/User",
+     *              ),
+     *          ),
+     *      ),
+     * ),
      */
     public function show(User $user)
     {
@@ -174,12 +189,21 @@ class UserController extends Controller
      *          in="path",
      *          @OA\Schema(type="integer")
      *      ),
+     *      @OA\RequestBody(
+     *          @OA\JsonContent(ref="#/components/schemas/UpdateUserRequest")
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="response",
-     *          @OA\JsonContent(ref="#/components/schemas/UserResource")
-     *       ),
-     *     )
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                   property="data",
+     *                   type="object",
+     *                   ref="#/components/schemas/User",
+     *              ),
+     *          ),
+     *      ),
+     * ),
      */
     public function update(UpdateUserRequest $request, User $user)
     {

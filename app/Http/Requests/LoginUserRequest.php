@@ -4,6 +4,12 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *      @OA\Property(property="username",type="string"),
+ *      @OA\Property(property="password",type="string"),
+ * ),
+ */
 class LoginUserRequest extends FormRequest
 {
     /**

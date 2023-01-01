@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  *      @OA\Property(property="description",type="string"),
  *      @OA\Property(property="start_date",type="string"),
  *      @OA\Property(property="end_date",type="string"),
+ *      @OA\Property(property="users", type="array", @OA\Items(ref="#/components/schemas/User")),
  * )
  */
 class Event extends Model

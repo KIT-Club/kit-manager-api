@@ -4,6 +4,12 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *      @OA\Property(property="name",type="string"),
+ *      @OA\Property(property="user_ids", type="array", @OA\Items(type="number")),
+ * )
+ */
 class StoreRoleRequest extends FormRequest
 {
     /**
@@ -24,7 +30,9 @@ class StoreRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|max:255',
+            'user_ids' => 'required|array',
+            'user_ids.*' => 'required|distinct|integer|min:1',
         ];
     }
 }

@@ -24,7 +24,7 @@ class UpdateEventRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => 'required|max:255',
             'start_date' => 'required|date',
             'end_date' => 'date|after_or_equal:start_date',
             'user_ids' => 'required|array',

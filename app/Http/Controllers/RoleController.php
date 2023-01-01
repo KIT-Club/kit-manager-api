@@ -2,46 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCommitteeRequest;
-use App\Http\Requests\UpdateCommitteeRequest;
-use App\Http\Resources\CommitteeResource;
-use App\Models\Committee;
+use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
+use App\Http\Resources\RoleResource;
+use App\Models\Role;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
-class CommitteeController extends Controller
+class RoleController extends Controller
 {
     /**
      * @OA\Get(
-     *      path="/committees",
-     *      tags={"committees"},
+     *      path="/roles",
+     *      tags={"roles"},
      *      summary="index",
      *      @OA\Response(
      *          response=200,
      *          description="response",
      *          @OA\JsonContent(
      *              @OA\Property(
-     *                   property="data",
-     *                   type="array",
-     *                   @OA\Items(ref="#/components/schemas/Committee"),
+     *                  property="data",type="array",
+     *                  @OA\Items(ref="#/components/schemas/Role")
      *              ),
      *          ),
-     *       ),
-     *     )
+     *      ),
+     * ),
      */
     public function index()
     {
-        $committees = Committee::paginate();
-        return (new CommitteeResource($committees))->response();
+        $roles = Role::paginate();
+        return (new RoleResource($roles))->response();
     }
 
     /**
      * @OA\Post(
-     *      path="/committees",
-     *      tags={"committees"},
+     *      path="/roles",
+     *      tags={"roles"},
      *      summary="store",
      *      @OA\RequestBody(
-     *          @OA\JsonContent(ref="#/components/schemas/StoreCommitteeRequest"),
+     *          @OA\JsonContent(ref="#/components/schemas/StoreRoleRequest"),
      *      ),
      *      @OA\Response(
      *          response=200,
@@ -50,23 +49,23 @@ class CommitteeController extends Controller
      *              @OA\Property(
      *                   property="data",
      *                   type="object",
-     *                   ref="#/components/schemas/Committee",
+     *                   ref="#/components/schemas/Role",
      *              ),
      *          ),
      *      ),
      * ),
      */
-    public function store(StoreCommitteeRequest $request)
+    public function store(StoreRoleRequest $request)
     {
-        $committee = Committee::create($request->all());
-        $committee->users()->sync($request->input('user_ids'));
-        return (new CommitteeResource($committee))->response()->setStatusCode(JsonResponse::HTTP_CREATED);
+        $role = Role::create($request->all());
+        $role->users()->sync($request->input('user_ids'));
+        return (new RoleResource($role))->response()->setStatusCode(JsonResponse::HTTP_CREATED);
     }
 
     /**
      * @OA\Get(
-     *      path="/committees/{id}",
-     *      tags={"committees"},
+     *      path="/roles/{id}",
+     *      tags={"roles"},
      *      summary="show",
      *      @OA\Parameter(
      *          name="id",
@@ -81,21 +80,21 @@ class CommitteeController extends Controller
      *              @OA\Property(
      *                   property="data",
      *                   type="object",
-     *                   ref="#/components/schemas/Committee",
+     *                   ref="#/components/schemas/Role",
      *              ),
      *          ),
      *      ),
-     * )
+     * ),
      */
-    public function show(Committee $committee)
+    public function show(Role $role)
     {
-        return (new CommitteeResource($committee))->response();
+        return (new RoleResource($role))->response();
     }
 
     /**
      * @OA\Put(
-     *      path="/committees/{id}",
-     *      tags={"committees"},
+     *      path="/roles/{id}",
+     *      tags={"roles"},
      *      summary="update",
      *      @OA\Parameter(
      *          name="id",
@@ -104,7 +103,7 @@ class CommitteeController extends Controller
      *          @OA\Schema(type="integer")
      *      ),
      *      @OA\RequestBody(
-     *          @OA\JsonContent(ref="#/components/schemas/StoreCommitteeRequest"),
+     *          @OA\JsonContent(ref="#/components/schemas/StoreRoleRequest"),
      *      ),
      *      @OA\Response(
      *          response=200,
@@ -113,23 +112,23 @@ class CommitteeController extends Controller
      *              @OA\Property(
      *                   property="data",
      *                   type="object",
-     *                   ref="#/components/schemas/Committee",
+     *                   ref="#/components/schemas/Role",
      *              ),
      *          ),
      *      ),
      * ),
      */
-    public function update(UpdateCommitteeRequest $request, Committee $committee)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        $committee->update($request->all());
-        $committee->users()->sync($request->input('user_ids'));
-        return (new CommitteeResource($committee))->response()->setStatusCode(JsonResponse::HTTP_OK);
+        $role->update($request->all());
+        $role->users()->sync($request->input('user_ids'));
+        return (new RoleResource($role))->response()->setStatusCode(JsonResponse::HTTP_OK);
     }
 
     /**
      * @OA\Delete(
-     *      path="/committees/{id}",
-     *      tags={"committees"},
+     *      path="/roles/{id}",
+     *      tags={"roles"},
      *      summary="destroy",
      *      @OA\Parameter(
      *          name="id",
@@ -143,9 +142,9 @@ class CommitteeController extends Controller
      *       ),
      *     )
      */
-    public function destroy(Committee $committee)
+    public function destroy(Role $role)
     {
-        $committee->delete();
+        $role->delete();
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }
