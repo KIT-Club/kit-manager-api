@@ -728,17 +728,6 @@
                 },
                 "type": "object"
             },
-            "UserResource": {
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/User"
-                        }
-                    }
-                },
-                "type": "object"
-            },
             "Committee": {
                 "properties": {
                     "id": {
@@ -833,6 +822,15 @@
                     }
                 },
                 "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "Authorization",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "Bearer"
             }
         }
     }

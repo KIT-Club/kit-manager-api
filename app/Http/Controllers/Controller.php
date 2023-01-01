@@ -17,12 +17,19 @@ use Illuminate\Routing\Controller as BaseController;
  *      @OA\License(
  *          name="Apache 2.0",
  *          url="http://www.apache.org/licenses/LICENSE-2.0.html"
- *      )
- * )
- *
+ *      ),
+ * ),
  * @OA\Server(
  *      url="/api",
- * )
+ * ),
+ * @OA\SecurityScheme(
+ *      securityScheme="bearerAuth",
+ *      in="header",
+ *      name="Authorization",
+ *      type="http",
+ *      scheme="Bearer",
+ *      bearerFormat="JWT",
+ * ),
  */
 class Controller extends BaseController
 {
