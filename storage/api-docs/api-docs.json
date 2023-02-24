@@ -17,6 +17,125 @@
         }
     ],
     "paths": {
+        "/calendar-file": {
+            "post": {
+                "tags": [
+                    "calendar"
+                ],
+                "summary": "Parse calendar from file",
+                "description": "Parse calendar from file",
+                "operationId": "d03ea46e79d364ffd5953608fa66b02b",
+                "requestBody": {
+                    "description": "Excel file",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "file": {
+                                        "description": "Excel file",
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "Response code",
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "description": "Response message",
+                                            "type": "string",
+                                            "example": "OK"
+                                        },
+                                        "data": {
+                                            "description": "Parsed data",
+                                            "type": "array",
+                                            "items": {}
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "description": "Response code",
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "description": "Error message",
+                                            "type": "string",
+                                            "example": "Error: ..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/calendar-login": {
+            "post": {
+                "tags": [
+                    "calendar"
+                ],
+                "summary": "Get calendar by student account",
+                "description": "Get calendar by student account",
+                "operationId": "0e31b2e1ed615d1cb30ff39f15c62186",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "description": "Username",
+                        "required": true
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Password",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Missing Item"
+                    },
+                    "401": {
+                        "description": "Wrong Password"
+                    },
+                    "403": {
+                        "description": "Error logging in"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                }
+            }
+        },
         "/committees": {
             "get": {
                 "tags": [

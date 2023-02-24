@@ -5,6 +5,7 @@ use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\EventController;
 use \App\Http\Controllers\CommitteeController;
 use \App\Http\Controllers\RoleController;
+use \App\Http\Controllers\CalendarController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,3 +25,6 @@ Route::apiResources([
     'committees' => CommitteeController::class,
     'roles' => RoleController::class,
 ]);
+
+Route::post('calendar-file', [CalendarController::class, 'file']);
+Route::post('calendar-login', [CalendarController::class, 'login']);
