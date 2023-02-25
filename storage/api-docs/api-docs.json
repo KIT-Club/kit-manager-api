@@ -17,14 +17,14 @@
         }
     ],
     "paths": {
-        "/calendar-file": {
+        "/calendar-excel": {
             "post": {
                 "tags": [
                     "calendar"
                 ],
-                "summary": "Parse calendar from file",
-                "description": "Parse calendar from file",
-                "operationId": "d03ea46e79d364ffd5953608fa66b02b",
+                "summary": "Parse calendar from excel file",
+                "description": "Parse calendar from excel file which is exported with option 'Hiển thị theo ngày học'",
+                "operationId": "65ec0111c9af9ae2a1244eda2b87627b",
                 "requestBody": {
                     "description": "Excel file",
                     "required": true,
@@ -129,6 +129,35 @@
                     },
                     "403": {
                         "description": "Error logging in"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                }
+            }
+        },
+        "/calendar-token": {
+            "post": {
+                "tags": [
+                    "calendar"
+                ],
+                "summary": "Get calendar by SignIn token",
+                "description": "Get calendar by SignIn token",
+                "operationId": "27b64d09f0e1ee5e76f616b3c6431c79",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "SignIn token",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Missing Item"
                     },
                     "500": {
                         "description": "Error"

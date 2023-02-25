@@ -8,11 +8,12 @@ use Exception;
 use Goutte\Client;
 use Symfony\Component\DomCrawler\Crawler;
 use DateTime;
+use Symfony\Component\BrowserKit\CookieJar;
+use Symfony\Component\BrowserKit\Cookie;
 
 class CalendarController extends Controller
 {
     private $loginUrl = 'http://qldt.actvn.edu.vn/CMCSoft.IU.Web.Info/Login.aspx';
-    // private $studentProfileUrl = 'http://qldt.actvn.edu.vn/CMCSoft.IU.Web.Info/StudentProfileNew/HoSoSinhVien.aspx';
     private $calendarUrl = 'http://qldt.actvn.edu.vn/CMCSoft.IU.Web.Info/Reports/Form/StudentTimeTable.aspx';
 
     public function __construct()
@@ -21,10 +22,10 @@ class CalendarController extends Controller
 
     /**
      * @OA\Post(
-     *      path="/calendar-file",
+     *      path="/calendar-excel",
      *      tags={"calendar"},
-     *      description="Parse calendar from file",
-     *      summary="Parse calendar from file",
+     *      description="Parse calendar from excel file which is exported with option 'Hiển thị theo ngày học'",
+     *      summary="Parse calendar from excel file",
      *      @OA\RequestBody(
      *         required=true,
      *         description="Excel file",
@@ -85,7 +86,7 @@ class CalendarController extends Controller
      *     ),
      * ),
      */
-    function file(Request $request)
+    function excel(Request $request)
     {
         try {
             $file = $request->file('file');
@@ -343,7 +344,6 @@ class CalendarController extends Controller
 
         $client = new Client();
 
-
         try {
             $crawler = $client->request('GET', $this->loginUrl);
 
@@ -378,21 +378,102 @@ class CalendarController extends Controller
                 ])->header('Content-Type', 'application/json');
             }
 
-            $schedule = $this->listSchedule($cookieJar);
+            return response()->json([
+                'code' => 200,
+                'message' => 'OK',
+                'data' => $this->listSchedule($cookieJar)
+            ])->header('Content-Type', 'application/json');
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => 'Error: ' . $e,
+            ])->header('Content-Type', 'application/json');
+        }
+    }
 
-            // $res = $client->request('GET', $this->studentProfileUrl);
-            // $crawler = new Crawler($res->html());
+    /**
+     * @OA\Post(
+     *     path="/calendar-token",
+     *     summary="Get calendar by SignIn token",
+     *     description="Get calendar by SignIn token",
+     *     tags={"calendar"},
+     *     @OA\Parameter(
+     *         name="token",
+     *         in="query",
+     *         description="SignIn token",
+     *         required=true,
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\Schema(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="code",
+     *                 type="integer",
+     *                 example=200,
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="OK",
+     *             ),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Missing Item",
+     *         @OA\Schema(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="code",
+     *                 type="integer",
+     *                 example=400,
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Missing Item",
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error",
+     *         @OA\Schema(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="code",
+     *                 type="integer",
+     *                 example=500,
+     *             ),
+     *             @OA\Property(
+     *                 property="message",
+     *                 type="string",
+     *                 example="Error",
+     *             ),
+     *         ),
+     *     ),
+     * ),
+     */
+    public function token(Request $request)
+    {
+        $token = $request->input('token');
 
-            // $displayName = $crawler->filter('input[name="txtHoDem"]')->attr('value') . ' ' . $crawler->filter('input[name="txtTen"]')->attr('value');
-            // $studentCode = $crawler->filter('input[name="txtMaSV"]')->attr('value');
-            // $gender = $crawler->filter('select[name="drpGioiTinh"] option[selected]')->text();
-            // $birthday = $crawler->filter('input[name="txtNgaySinh"]')->attr('value');
-            // $information = [
-            //     'displayName' => $displayName,
-            //     'studentCode' => $studentCode,
-            //     'gender' => $gender,
-            //     'birthday' => $birthday,
-            // ];
+        if (!$token) {
+            return response()->json([
+                'code' => '400',
+                'message' => 'Missing Item',
+            ])->header('Content-Type', 'application/json');
+        }
+
+        try {
+            $cookieJar = new CookieJar();
+            $cookieJar->set(new Cookie('SignIn', $token));
 
             return response()->json([
                 'code' => 200,

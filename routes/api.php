@@ -26,5 +26,6 @@ Route::apiResources([
     'roles' => RoleController::class,
 ]);
 
-Route::post('calendar-file', [CalendarController::class, 'file']);
+Route::post('calendar-excel', [CalendarController::class, 'excel']);
 Route::post('calendar-login', [CalendarController::class, 'login']);
+Route::post('calendar-token', [CalendarController::class, 'token']);
