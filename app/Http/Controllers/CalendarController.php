@@ -528,6 +528,6 @@ class CalendarController extends Controller
 
         $scheduleData = $this->parseExcelFile($metaData['uri']);
 
-        return array_merge(["SignInToken" => $cookieJar->get("SignIn")->getValue()], $scheduleData);
+        return array_merge(["signInToken" => $cookieJar->get("SignIn")->getValue()], $scheduleData);
     }
 }
