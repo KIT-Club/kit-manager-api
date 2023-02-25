@@ -488,7 +488,7 @@ class CalendarController extends Controller
         }
     }
 
-    public function listSchedule($cookieJar, $drpSemester = null)
+    public function listSchedule(CookieJar $cookieJar, $drpSemester = null)
     {
         $client = new Client(null, null, $cookieJar);
 
@@ -523,6 +523,6 @@ class CalendarController extends Controller
 
         $scheduleData = $this->parseExcelFile($metaData['uri']);
 
-        return $scheduleData;
+        return array_merge(["SignInToken" => $cookieJar->get("SignIn")->getValue()], $scheduleData);
     }
 }
