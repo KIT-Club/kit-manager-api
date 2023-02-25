@@ -11,6 +11,11 @@ use DateTime;
 use Symfony\Component\BrowserKit\CookieJar;
 use Symfony\Component\BrowserKit\Cookie;
 
+// CREDIT
+// Author: Phuc
+// Github: https://github.com/Haven-Code
+// Repository: https://github.com/Haven-Code/KMA-Schedule-API-V3
+
 class CalendarController extends Controller
 {
     private $loginUrl = 'http://qldt.actvn.edu.vn/CMCSoft.IU.Web.Info/Login.aspx';
