@@ -6,8 +6,6 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Committee;
-use App\Models\UserRole;
-use App\Models\UserCommittee;
 use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
@@ -19,7 +17,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::transaction(function () {
+        DB::beginTransaction();
+        try {
             User::create([
                 'username' => 'AT010101',
                 'name' => 'Nguyen Van A',
@@ -37,16 +36,27 @@ class DatabaseSeeder extends Seeder
             Committee::create(['name' => "Chuyên Môn"]);
             Committee::create(['name' => "Truyền Thông"]);
             Committee::create(['name' => "Hậu Cần"]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
 
-            DB::table('user_role')->create([
+        DB::beginTransaction();
+        try {
+            DB::table('user_role')->insert([
                 'user_id' => User::where('username', 'AT010101')->first()->id,
                 'role_id' => Role::where('name', "Super Admin")->first()->id,
             ]);
 
-            DB::table('user_committee')->create([
+            DB::table('user_committee')->insert([
                 'user_id' => User::where('username', 'AT010101')->first()->id,
                 'committee_id' => Committee::where('name', "Điều Hành")->first()->id,
             ]);
-        });
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 }
