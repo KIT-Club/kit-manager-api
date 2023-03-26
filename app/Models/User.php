@@ -42,4 +42,22 @@ class User extends Authenticatable
     protected $hidden = [];
 
     protected $casts = [];
+
+    // relation with committee
+    public function committees()
+    {
+        return $this->belongsToMany(Committee::class, 'user_committee', 'user_id', 'committee_id');
+    }
+
+    // relation with role
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_role', 'user_id', 'role_id');
+    }
+
+    // relation with event
+    public function events()
+    {
+        return $this->belongsToMany(Event::class, 'user_event', 'user_id', 'event_id');
+    }
 }

@@ -716,6 +716,42 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "store",
+                "operationId": "a1fce870c566eb5fc0cf3178ec5d2fed",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreUserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/User"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/users/{id}": {
@@ -854,6 +890,26 @@
                         "type": "string"
                     },
                     "user_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "StoreUserRequest": {
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "role_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        }
+                    },
+                    "committee_ids": {
                         "type": "array",
                         "items": {
                             "type": "number"

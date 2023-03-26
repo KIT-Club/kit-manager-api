@@ -30,7 +30,7 @@ class LoginUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|max:8',
+            'username' => 'required|regex:/^[A-Za-z]{2}[0-9]{6}$/',
             'password' => 'required|max:255',
         ];
     }

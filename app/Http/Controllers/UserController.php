@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use App\Utils\CrawlUtil;
 use App\Http\Requests\UpdateUserRequest;
@@ -126,6 +127,36 @@ class UserController extends Controller
     }
 
     /**
+     * @OA\Post(
+     *      path="/users",
+     *      tags={"users"},
+     *      summary="store",
+     *      @OA\RequestBody(
+     *          @OA\JsonContent(ref="#/components/schemas/StoreUserRequest"),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="response",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                   property="data",
+     *                   type="array",
+     *                   @OA\Items(ref="#/components/schemas/User"),
+     *              ),
+     *          ),
+     *      ),
+     * ),
+     */
+    public function store(StoreUserRequest $request)
+    {
+        $username = strtoupper($request->input('username'));
+        $user = User::create(["username" => $username]);
+        $user->committees()->sync($request->input('committee_ids'));
+        $user->roles()->sync($request->input('role_ids'));
+        return (new UserResource($user))->response()->setStatusCode(JsonResponse::HTTP_CREATED);
+    }
+
+    /**
      * @OA\Get(
      *      path="/users",
      *      tags={"users"},
@@ -145,7 +176,26 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate();
+        // include `committees`, `events`, `roles`, `permissions` if it is included in `include` query
+        $includes = explode(",", request()->get("includes"));
+        $with = [];
+        if (in_array("committees", $includes)) {
+            array_push($with, "committees");
+        }
+        if (in_array("events", $includes)) {
+            array_push($with, "events");
+        }
+        if (in_array("roles", $includes)) {
+            array_push($with, "roles");
+        }
+        if (in_array("permissions", $includes)) {
+            array_push($with, "permissions");
+        }
+        if (count($with)) {
+            $users = User::with(...$with)->paginate();
+        } else {
+            $users = User::paginate();
+        }
         return (new UserResource($users))->response();
     }
 
