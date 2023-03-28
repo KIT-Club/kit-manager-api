@@ -6,9 +6,11 @@ use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use App\Utils\CrawlUtil;
 use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Database\Eloquent\Builder;
 use Exception;
 
 class UserController extends Controller
@@ -18,6 +20,28 @@ class UserController extends Controller
     public function __construct(CrawlUtil $crawlUtil)
     {
         $this->crawlUtil = $crawlUtil;
+    }
+
+    private function paginate($query, $request)
+    {
+        return $query->paginate(request()->query('limit', 10));
+    }
+
+    private function withIncludes($query, $request)
+    {
+        $includes = explode(",", request()->get("includes"));
+        $with = [];
+        if (in_array("committees", $includes)) array_push($with, "committees");
+        if (in_array("events", $includes)) array_push($with, "events");
+        if (in_array("roles", $includes)) array_push($with, "roles");
+        if (in_array("permissions", $includes)) array_push($with, "permissions");
+        if (count($with)) {
+            if ($query instanceof User)
+                $query->load(...$with);
+            else if ($query instanceof Builder)
+                $query->with(...$with);
+        }
+        return $query;
     }
 
     /**
@@ -114,7 +138,17 @@ class UserController extends Controller
             $birthday = implode("-", array_reverse(explode("/", $birthday)));
 
             // create user
-            $user = User::create([
+            $user = User::withTrashed()->where('username', $username)->first();
+            if ($user)
+                $user->update([
+                    "birthday" => $birthday,
+                    "class" => $class,
+                    "major" => $major,
+                    "name" => $name,
+                    "username" => $username,
+                    "deleted_at" => null,
+                ]);
+            else $user = User::create([
                 "birthday" => $birthday,
                 "class" => $class,
                 "major" => $major,
@@ -150,7 +184,11 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $username = strtoupper($request->input('username'));
-        $user = User::create(["username" => $username]);
+        $user = User::withTrashed()->where('username', $username)->first();
+
+        if ($user) $user->restore();
+        else $user = User::create(["username" => $username]);
+
         $user->committees()->sync($request->input('committee_ids'));
         $user->roles()->sync($request->input('role_ids'));
         return (new UserResource($user))->response()->setStatusCode(JsonResponse::HTTP_CREATED);
@@ -174,29 +212,12 @@ class UserController extends Controller
      *      ),
      * ),
      */
-    public function index()
+    public function index(Request $request)
     {
-        // include `committees`, `events`, `roles`, `permissions` if it is included in `include` query
-        $includes = explode(",", request()->get("includes"));
-        $with = [];
-        if (in_array("committees", $includes)) {
-            array_push($with, "committees");
-        }
-        if (in_array("events", $includes)) {
-            array_push($with, "events");
-        }
-        if (in_array("roles", $includes)) {
-            array_push($with, "roles");
-        }
-        if (in_array("permissions", $includes)) {
-            array_push($with, "permissions");
-        }
-        if (count($with)) {
-            $users = User::with(...$with)->paginate();
-        } else {
-            $users = User::paginate();
-        }
-        return (new UserResource($users))->response();
+        $query = User::query();
+        $query = $this->withIncludes($query, $request);
+
+        return (new UserResource($this->paginate($query, $request)))->response();
     }
 
     /**
@@ -223,8 +244,9 @@ class UserController extends Controller
      *      ),
      * ),
      */
-    public function show(User $user)
+    public function show(Request $request, User $user)
     {
+        $user = $this->withIncludes($user, $request);
         return (new UserResource($user))->response();
     }
 
@@ -259,5 +281,28 @@ class UserController extends Controller
     {
         $user->update($request->all());
         return (new UserResource($user))->response()->setStatusCode(JsonResponse::HTTP_OK);
+    }
+
+    /**
+     * @OA\Delete(
+     *      path="/users/{id}",
+     *      tags={"users"},
+     *      summary="destroy",
+     *      @OA\Parameter(
+     *          name="id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="response",
+     *      ),
+     * ),
+     */
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return response()->json(null, JsonResponse::HTTP_NO_CONTENT);
     }
 }

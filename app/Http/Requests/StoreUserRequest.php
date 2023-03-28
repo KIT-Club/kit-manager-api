@@ -31,7 +31,7 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|string|regex:/^[A-Za-z]{2}[0-9]{6}$/|unique:user,username',
+            'username' => 'required|string|regex:/^[A-Za-z]{2}[0-9]{6}$/|unique:user,username,NULL,NULL,deleted_at,NULL',
             'role_ids' => 'required|array|max:1|min:1',
             'role_ids.*' => 'required|distinct|integer|min:1',
             'committee_ids' => 'required|array|min:1',

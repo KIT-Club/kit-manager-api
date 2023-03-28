@@ -831,6 +831,28 @@
                         }
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "destroy",
+                "operationId": "43dd20becb1f47444e484cbb18ce345c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "response"
+                    }
+                }
             }
         }
     },
