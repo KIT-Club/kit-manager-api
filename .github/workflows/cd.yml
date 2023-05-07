@@ -41,11 +41,6 @@ jobs:
           cd $PATH_TO_PROJECT
           git pull
           php -r "file_exists('.env') || copy('.env.example', '.env');"
-          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          php artisan key:generate
-          chmod -R 777 storage bootstrap/cache
-          php artisan migrate
-          php artisan l5-swagger:generate
           END
         env:
           PATH_TO_PROJECT: ${{ secrets.PATH_TO_PROJECT }}
@@ -74,24 +69,3 @@ jobs:
           END
         env:
           PATH_TO_PROJECT: ${{ secrets.PATH_TO_PROJECT }}
-# jobs:
-#   Deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Main workflow
-#         uses: appleboy/ssh-action@master
-#         with:
-#           host: ${{ secrets.SSH_HOST }}
-#           username: ${{ secrets.SSH_USERNAME }}
-#           password: ${{ secrets.SSH_PASSWORD }}
-#           port: ${{ secrets.SSH_PORT }}
-#           script: |
-#             cd ${{ secrets.PATH_TO_PROJECT }}
-#             git pull
-#             php -r "file_exists('.env') || copy('.env.example', '.env');"
-#             composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-#             php artisan key:generate
-#             chmod -R 777 storage bootstrap/cache
-#             php artisan migrate
-#             php artisan l5-swagger:generate
-
