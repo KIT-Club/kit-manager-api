@@ -12,29 +12,33 @@ concurrency:
 
 jobs:
   deploy:
-    name: "Deploy to staging"
+    name: "Deploy"
     runs-on: ubuntu-latest
     steps:
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/staging.key
-          chmod 600 ~/.ssh/staging.key
-          cat >>~/.ssh/config <<END
-          Host staging
+          echo "$SSH_KEY" > ~/.ssh/server
+          chmod 600 ~/.ssh/server
+          cat > ~/.ssh/config <<END
+          Host server
             HostName $SSH_HOST
             User $SSH_USERNAME
-            IdentityFile ~/.ssh/staging.key
+            IdentityFile ~/.ssh/server
+            PubkeyAuthentication yes
+            ChallengeResponseAuthentication no
+            PasswordAuthentication no
             StrictHostKeyChecking no
           END
         env:
-          SSH_USER: ${{ secrets.SSH_USERNAME }}
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
           SSH_KEY: ${{ secrets.SSH_KEY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
 
       - name: Run commands
         run: |
-          cd ${{ secrets.PATH_TO_PROJECT }}
+          ssh server <<END
+          cd $PATH_TO_PROJECT
           git pull
           php -r "file_exists('.env') || copy('.env.example', '.env');"
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
@@ -42,7 +46,34 @@ jobs:
           chmod -R 777 storage bootstrap/cache
           php artisan migrate
           php artisan l5-swagger:generate
+          END
+        env:
+          PATH_TO_PROJECT: ${{ secrets.PATH_TO_PROJECT }}
 
+      - name: Composer installing
+        run: |
+          ssh server <<END
+          cd $PATH_TO_PROJECT
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+          php artisan key:generate
+          chmod -R 777 storage bootstrap/cache
+          php artisan migrate
+          php artisan l5-swagger:generate
+          END
+        env:
+          PATH_TO_PROJECT: ${{ secrets.PATH_TO_PROJECT }}
+
+      - name: Upgrade
+        run: |
+          ssh server <<END
+          cd $PATH_TO_PROJECT
+          php artisan key:generate
+          chmod -R 777 storage bootstrap/cache
+          php artisan migrate
+          php artisan l5-swagger:generate
+          END
+        env:
+          PATH_TO_PROJECT: ${{ secrets.PATH_TO_PROJECT }}
 # jobs:
 #   Deploy:
 #     runs-on: ubuntu-latest
