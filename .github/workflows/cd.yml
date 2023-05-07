@@ -14,8 +14,6 @@ jobs:
   deploy:
     name: "Deploy to staging"
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    # needs: test
     steps:
       - name: Configure SSH
         run: |
@@ -36,13 +34,13 @@ jobs:
 
       - name: Run commands
         run: |
-          cd ${{ secrets.PATH_TO_PROJECT }} && \
-          git pull && \
-          php -r "file_exists('.env') || copy('.env.example', '.env');" && \
-          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist && \
-          php artisan key:generate && \
-          chmod -R 777 storage bootstrap/cache && \
-          php artisan migrate && \
+          cd ${{ secrets.PATH_TO_PROJECT }}
+          git pull
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+          php artisan key:generate
+          chmod -R 777 storage bootstrap/cache
+          php artisan migrate
           php artisan l5-swagger:generate
 
 # jobs:
