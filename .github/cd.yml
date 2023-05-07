@@ -3,7 +3,7 @@ run-name: "CD #${{ github.run_number }} (${{github.sha}})"
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
