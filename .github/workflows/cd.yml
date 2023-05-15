@@ -1,5 +1,5 @@
 name: CD
-run-name: "CD #${{ github.run_number }} (${{github.sha}})"
+# run-name: "CD #${{ github.run_number }} (${{github.sha}})"
 
 on:
   push:
@@ -50,10 +50,6 @@ jobs:
           ssh server <<END
           cd $PATH_TO_PROJECT
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          php artisan key:generate
-          chmod -R 777 storage bootstrap/cache
-          php artisan migrate
-          php artisan l5-swagger:generate
           END
         env:
           PATH_TO_PROJECT: ${{ secrets.PATH_TO_PROJECT }}
