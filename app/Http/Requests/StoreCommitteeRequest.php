@@ -31,7 +31,7 @@ class StoreCommitteeRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'user_ids' => 'required|array',
+            'user_ids' => 'array',
             'user_ids.*' => 'required|distinct|integer|min:1',
         ];
     }
