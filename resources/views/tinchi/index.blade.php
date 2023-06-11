@@ -37,8 +37,19 @@
     <form action="" method="post" enctype="multipart/form-data">
         <h1>Upload JSON Tín Chỉ</h1>
         {{ csrf_field() }}
-        <input class="input" type="file" name="json" accept=".json"><br />
-        <input class="input" type="password" name="password" placeholder="Nhập mật khẩu"><br />
+        <table>
+            <tbody>
+                <tr>
+                    <td>JSON</td>
+                    <td><input class="input" type="file" name="json" accept=".json" required><br /></td>
+                </tr>
+                <tr>
+                    <td>EXCEL</td>
+                    <td><input class="input" type="file" name="excel" accept=".xls,.xlsx" required><br /></td>
+                </tr>
+            </tbody>
+        </table>
+        <input class="input" type="password" name="password" placeholder="Nhập mật khẩu" required><br />
         <input class="submit" type="submit" value="Upload" />
         @if ($error = session('error'))
             <div style="color: red; display: block; margin-top: 1rem">
@@ -52,8 +63,7 @@
         @endif
         <div style="margin-top: 1rem;">
             <span>Example of json file:</span><br>
-            <pre>
-{
+<pre>{
     "title": "Học kỳ n năm học 20xx - 20xx",
     "data": [
         [
@@ -72,8 +82,7 @@
         ],
         ...
     ]
-}
-            </pre>
+}</pre>
         </div>
     </form>
 </body>
