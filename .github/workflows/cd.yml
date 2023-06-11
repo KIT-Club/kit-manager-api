@@ -62,6 +62,7 @@ jobs:
           chmod -R 777 storage bootstrap/cache
           php artisan migrate
           php artisan l5-swagger:generate
+          php artisan storage:link
           END
         env:
           PATH_TO_PROJECT: ${{ secrets.PATH_TO_PROJECT }}
