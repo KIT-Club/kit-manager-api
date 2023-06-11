@@ -26,7 +26,7 @@ class TinChiController extends Controller
         if (json_last_error() !== JSON_ERROR_NONE || !is_string($jsonData['title'] ?? null) || !is_array($jsonData['data'] ?? null))
             return back()->withInput()->with('error', 'File hem đúng');
 
-        $json-> storeAs('public/tinchi', 'tinchi.json');
+        $json->storeAs('public', 'tinchi.json');
 
         if (json_last_error() !== JSON_ERROR_NONE)
             return back()->withInput()->with('error', 'Có lỗi xảy ra');
