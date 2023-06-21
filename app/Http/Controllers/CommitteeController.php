@@ -89,7 +89,7 @@ class CommitteeController extends Controller
      */
     public function show(Committee $committee)
     {
-        return (new CommitteeResource($committee))->response();
+        return (new CommitteeResource($committee->load('users')))->response();
     }
 
     /**

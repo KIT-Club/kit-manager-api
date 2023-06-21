@@ -64,7 +64,7 @@ class UserController extends Controller
     public function login(\App\Http\Requests\LoginUserRequest $request)
     {
         // get form
-        $result = Http::get('https://actvn-schedule.cors-ngosangns.workers.dev/login');
+        $result = Http::withOptions(['verify' => false])->get('https://actvn-schedule.cors-ngosangns.workers.dev/login');
         if (!$result->ok()) {
             throw new Exception("ACTVN connect error!");
         }
@@ -77,7 +77,7 @@ class UserController extends Controller
         $password = md5($request->password);
 
         // login actvn
-        $result = Http::asForm()->post('https://actvn-schedule.cors-ngosangns.workers.dev/login', [
+        $result = Http::withOptions(['verify' => false])->asForm()->post('https://actvn-schedule.cors-ngosangns.workers.dev/login', [
             "__VIEWSTATE" => $viewState,
             "__EVENTVALIDATION" => $eventValidation,
             "txtUserName" => $username,
@@ -105,7 +105,7 @@ class UserController extends Controller
             $class = "";
             $major = "";
             $birthday = "";
-            $result = Http::withHeaders([
+            $result = Http::withOptions(['verify' => false])->withHeaders([
                 "x-cors-headers" => json_encode(["Cookie" => $signInToken])
             ])->get('https://actvn-schedule.cors-ngosangns.workers.dev/CMCSoft.IU.Web.info/StudentMark.aspx');
             $ok = $result->ok();
@@ -123,7 +123,7 @@ class UserController extends Controller
             if ($name == "" || $class == "" || $major == "") {
                 throw new Exception("Get info failed!");
             }
-            $result = Http::withHeaders([
+            $result = Http::withOptions(['verify' => false])->withHeaders([
                 "x-cors-headers" => json_encode(["Cookie" => $signInToken])
             ])->get('https://actvn-schedule.cors-ngosangns.workers.dev/CMCSoft.IU.Web.Info/StudentProfileNew/HoSoSinhVien.aspx');
             $ok = $result->ok();
