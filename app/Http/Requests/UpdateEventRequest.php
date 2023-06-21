@@ -27,7 +27,7 @@ class UpdateEventRequest extends FormRequest
             'name' => 'required|max:255',
             'start_date' => 'required|date',
             'end_date' => 'date|after_or_equal:start_date|nullable',
-            'user_ids' => 'required|array',
+            'user_ids' => 'array',
             'user_ids.*' => 'required|distinct|integer|min:1',
         ];
     }
