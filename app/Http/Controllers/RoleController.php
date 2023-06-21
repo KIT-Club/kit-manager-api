@@ -88,7 +88,7 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        return (new RoleResource($role))->response();
+        return (new RoleResource($role->load('users')))->response();
     }
 
     /**
