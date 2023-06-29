@@ -8,6 +8,7 @@ use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
 {
@@ -55,9 +56,10 @@ class RoleController extends Controller
      *      ),
      * ),
      */
-    public function store(StoreRoleRequest $request)
+    public function store(StoreRoleRequest $request, $permissions)
     {
-        $role = Role::create($request->all());
+        $data = $request->all();
+        $role = Role::create($data);
         $role->users()->sync($request->input('user_ids'));
         return (new RoleResource($role))->response()->setStatusCode(JsonResponse::HTTP_CREATED);
     }
@@ -120,7 +122,8 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, Role $role)
     {
-        $role->update($request->all());
+        $data = $request->all();
+        $role->update($data);
         $role->users()->sync($request->input('user_ids'));
         return (new RoleResource($role))->response()->setStatusCode(JsonResponse::HTTP_OK);
     }

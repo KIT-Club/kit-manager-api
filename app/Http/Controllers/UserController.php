@@ -34,7 +34,6 @@ class UserController extends Controller
         if (in_array("committees", $includes)) array_push($with, "committees");
         if (in_array("events", $includes)) array_push($with, "events");
         if (in_array("roles", $includes)) array_push($with, "roles");
-        if (in_array("permissions", $includes)) array_push($with, "permissions");
         if (count($with)) {
             if ($query instanceof User)
                 $query->load(...$with);

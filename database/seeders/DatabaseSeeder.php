@@ -19,16 +19,16 @@ class DatabaseSeeder extends Seeder
     {
         DB::beginTransaction();
         try {
-            User::create([
-                'username' => 'AT010101',
-                'name' => 'Nguyen Van A',
-                'birthday' => '1986-01-01',
-                'class' => 'AT1A',
-                'major' => "An Toàn thông tin"
-            ]);
+            // User::create([
+            //     'username' => 'AT010101',
+            //     'name' => 'Nguyen Van A',
+            //     'birthday' => '1986-01-01',
+            //     'class' => 'AT1A',
+            //     'major' => "An Toàn thông tin"
+            // ]);
 
-            Role::create(['name' => 'Super Admin']);
-            Role::create(['name' => 'Owner']);
+            Role::create(['name' => 'Super Admin', 'is_admin' => true]);
+            Role::create(['name' => 'Admin']);
             Role::create(['name' => 'Moderator']);
             Role::create(['name' => 'Member']);
 
@@ -42,21 +42,21 @@ class DatabaseSeeder extends Seeder
             throw $e;
         }
 
-        DB::beginTransaction();
-        try {
-            DB::table('user_role')->insert([
-                'user_id' => User::where('username', 'AT010101')->first()->id,
-                'role_id' => Role::where('name', "Super Admin")->first()->id,
-            ]);
+        // DB::beginTransaction();
+        // try {
+        //     DB::table('user_role')->insert([
+        //         'user_id' => User::where('username', 'AT010101')->first()->id,
+        //         'role_id' => Role::where('name', "Super Admin")->first()->id,
+        //     ]);
 
-            DB::table('user_committee')->insert([
-                'user_id' => User::where('username', 'AT010101')->first()->id,
-                'committee_id' => Committee::where('name', "Điều Hành")->first()->id,
-            ]);
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-            throw $e;
-        }
+        //     DB::table('user_committee')->insert([
+        //         'user_id' => User::where('username', 'AT010101')->first()->id,
+        //         'committee_id' => Committee::where('name', "Điều Hành")->first()->id,
+        //     ]);
+        //     DB::commit();
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+        //     throw $e;
+        // }
     }
 }

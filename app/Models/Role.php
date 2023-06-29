@@ -20,6 +20,13 @@ class Role extends Model
 
     protected $fillable = [
         'name',
+        'permissions',
+        'is_admin',
+    ];
+
+    protected $casts = [
+        'is_admin' => 'boolean',
+        'permissions' => 'array',
     ];
 
     public function users()
